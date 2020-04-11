@@ -10,8 +10,10 @@ class Ship:
         
         self.speed = 10
         
-    def update(self):
+    def update(self, buoy):
         # updates controls
+        
+        
         self.move()
     
     def move(self):
@@ -23,12 +25,7 @@ class Ship:
         y_speed = cspeed.imag
         
         self.x_coord += x_speed * 1 # delta time factor needed
-        self.y_coord += y_speed * 1
-            
-
-        
+        self.y_coord += y_speed * 1        
     
-    def get_view_data(self):
-        return {'x_coord': self.x_coord,
-                'y_coord': self.y_coord}
+
         

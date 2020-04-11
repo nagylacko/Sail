@@ -1,4 +1,3 @@
-import tkinter as tk
 import time
 from model import Model
 from view import View
@@ -15,7 +14,6 @@ class Controller():
         for i in range(50):
             self.model.update()
             self.view.update(self.model)
-            # self.root.update()
             time.sleep(0.2)
         
         self.view.mainloop()
