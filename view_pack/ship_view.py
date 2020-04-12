@@ -7,7 +7,8 @@ class ShipView:
     def __init__(self):
         SIZE = 2
         # relative coordinates to center
-        shape = [[-4,7],[-4,-3],[0,-8],[4,-3],[4,7]] 
+        #shape = [[-4,7],[-4,-3],[0,-8],[4,-3],[4,7]] 
+        shape = [[-7,-4],[3,-4],[8,0],[3,4],[-7,4]]
         # rescale by SIZE
         self.ship_shape = [[SIZE * j for j in i] for i in shape]
         self.ship_view = None

@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['controller\\controller.py', 'model\\model.py', 'model\\population.py', 'model\\ship.py', 'model\\neural_network.py']
+recent_files = ['model_pack\\model.py', 'model_pack\\population.py', 'model_pack\\ship.py', 'model_pack\\neural_network.py']
 

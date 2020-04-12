@@ -1,23 +1,21 @@
 import time
-from model import Model
-from view import View
+from model_pack import Model
+from view_pack import View
 
 
-
-class Controller():
+class Controller:
     def __init__(self):
         self.model = Model()
-        self.view = View()
+        self.view = View(self.model)
   
     def run(self):        
         
-        for i in range(50):
+        for i in range(100):
             self.model.update()
             self.view.update(self.model)
             time.sleep(0.2)
         
-        self.view.mainloop()
-         
+        self.view.mainloop()     
 
 
 if __name__ == '__main__':
