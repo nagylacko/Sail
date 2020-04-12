@@ -14,18 +14,16 @@ class NeuralNetwork:
             self.biases.append(np.random.uniform(-0.1, 0.1, size=layer_sizes[i + 1]))
             
     def predict(self, input_layer):
-        temp = np.array([input_layer])
+        layer = np.array([input_layer])
         for w, b in zip(self.weights, self.biases):
-            # print('temp', temp.shape)
-            # print('w', w.shape)
-            temp = np.matmul(temp, w)
-            temp = np.add(temp, b)
-            temp = np.tanh(temp)
+            layer = np.matmul(layer, w)
+            layer = np.add(layer, b)
+            layer = np.tanh(layer)
         # calculate softmax
-        exponentials = np.exp(temp)
-        sum_exponentials = sum(exponentials)    
+        # exponentials = np.exp(x)
+        # sum_exponentials = sum(exponentials)    
         # return exponentials/sum_exponentials   
-        return temp[0]        
+        return layer[0]        
             
     def mutate(self, percentage):
         for w, b in zip(self.weights, self.biases):

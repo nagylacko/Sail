@@ -21,8 +21,7 @@ class Ship:
         # move the ship
         self.move(steer)
         # record distance
-        self.record_distance()
-        
+        self.record_distance(buoy)        
         
     def calc_ship_buoy_angle(self, buoy):
         cangle_buoy = complex(buoy.x_coord - self.x_coord,
@@ -33,7 +32,8 @@ class Ship:
         if angle_diff > math.pi:
             return -2 * math.pi + angle_diff
         if angle_diff < -math.pi:
-            return 2 * math.pi - angle_diff    
+            return 2 * math.pi - angle_diff 
+        return angle_diff
     
     def move(self, steer):
         # update orientation by steer
@@ -52,8 +52,8 @@ class Ship:
         return math.sqrt(((buoy.x_coord - self.x_coord) ** 2) + 
                          ((buoy.y_coord - self.y_coord) ** 2))
         
-    def record_distance(self):
-        self.min_distance = min(self.calc_ship_buoy_dist, self.min_distance)
+    def record_distance(self, buoy):
+        self.min_distance = min(self.calc_ship_buoy_dist(buoy), self.min_distance)
             
     
 

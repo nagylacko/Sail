@@ -9,7 +9,6 @@ class Controller:
         self.view = View(self.model)
   
     def run(self):        
-        
         for i in range(100):
             self.model.update()
             self.view.update(self.model)
@@ -21,3 +20,5 @@ class Controller:
 if __name__ == '__main__':
     c = Controller()
     c.run()
+    
+    
