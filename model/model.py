@@ -13,6 +13,7 @@ class Model():
         
         
     def update(self):
-        self.ship.update(self.buoy)
+        self.ship.update(self.buoy) # for a single ship
+        self.population.update()
         
 
