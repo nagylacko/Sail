@@ -5,30 +5,46 @@ import cmath
 class ShipView:
     
     def __init__(self):
-        SIZE = 2
-        # relative coordinates to center
-        #shape = [[-4,7],[-4,-3],[0,-8],[4,-3],[4,7]] 
-        shape = [[-7,-4],[3,-4],[8,0],[3,4],[-7,4]]
+        SIZE = 1
+        # hull coordinates (ship center is in origo)
+        hull = [[-7,-4],[3,-4],[8,0],[3,4],[-7,4]]
         # rescale by SIZE
-        self.ship_shape = [[SIZE * j for j in i] for i in shape]
-        self.ship_view = None
+        self.hull = [[SIZE * j for j in i] for i in hull]
+        self.hull_view = None
         
-    def update(self, canvas, ship):        
-        # offset ship_shape with ship center coordinates
-        coordinates = [[i[0] + ship.x_coord, i[1] + ship.y_coord] for i in self.ship_shape]
+        sail = [[-0.5,-3],[-1.5,-6],[-1.4,-6.1],[0.5,-3],[0.5,3],[-1.4,6.1],[-1.5,6],[-0.5,3]]
+        self.sail = [[SIZE * j for j in i] for i in sail]
+        self.sail_view = None
         
-        center = complex(ship.x_coord, ship.y_coord)        
-        cangle = cmath.exp(ship.orientation * 1j) # angle in radians
-        abs_coord = []
-        for x, y in coordinates:
-            cc = cangle * (complex(x, y) - center) + center
-            abs_coord.append([cc.real, cc.imag])
+    def update(self, canvas, ship):   
+        """
+        rotates hull coordinates with ship orientation,
+        offsets hull coordinates with ship center coordinates,
+        updates canvas with new coordinates
+        """
+        ccenter = complex(ship.x_coord, ship.y_coord)        
+        cangle = cmath.exp(ship.orientation * 1j)
+        hull= []
+        for x, y in self.hull:
+            cc = cangle * complex(x, y) + ccenter
+            hull.append([cc.real, cc.imag])
 
-        if self.ship_view is not None:
-            canvas.delete(self.ship_view)        
+        if self.hull_view is not None:
+            canvas.delete(self.hull_view)        
         
-        self.ship_view = canvas.create_polygon(abs_coord, outline='red', fill='brown')        
+        self.hull_view = canvas.create_polygon(hull, outline='red', fill='brown')
         
-        canvas.create_oval(ship.x_coord - 2, ship.y_coord - 2,
-                                ship.x_coord + 2, ship.y_coord + 2,
-                                fill='white')
+        sail= []
+        for x, y in self.sail:
+            cc = cangle * complex(x, y) + ccenter
+            sail.append([cc.real, cc.imag])
+
+        if self.sail_view is not None:
+            canvas.delete(self.sail_view)        
+        
+        self.sail_view = canvas.create_polygon(sail, fill='white')
+
+    def clear(self, canvas):
+        canvas.delete(self.hull_view) 
+        
+        

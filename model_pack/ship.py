@@ -4,24 +4,26 @@ from .neural_network import NeuralNetwork
 
 class Ship:
     
-    def __init__(self):
+    def __init__(self, mode):
         self.x_coord = 100
         self.y_coord = 200
         self.orientation = -(math.pi / 2) # angle in radians
         
         self.speed = 5
         
-        self.nn = NeuralNetwork()
+        if mode == 'random_nn':
+            self.nn = NeuralNetwork()
         
-        self.min_distance = 100000
+        self.min_distance = 100000 ##########
+        self.time = 10000 ###################
         
-    def update(self, buoy):
+    def update(self, buoy, time):
         # updates controls by inputs
         steer = self.nn.predict(self.calc_ship_buoy_angle(buoy))        
         # move the ship
         self.move(steer)
         # record distance
-        self.record_distance(buoy)        
+        self.record_distance(buoy, time)        
         
     def calc_ship_buoy_angle(self, buoy):
         cangle_buoy = complex(buoy.x_coord - self.x_coord,
@@ -52,9 +54,14 @@ class Ship:
         return math.sqrt(((buoy.x_coord - self.x_coord) ** 2) + 
                          ((buoy.y_coord - self.y_coord) ** 2))
         
-    def record_distance(self, buoy):
+    def record_distance(self, buoy, time):
         self.min_distance = min(self.calc_ship_buoy_dist(buoy), self.min_distance)
+        if self.min_distance < 3: # needs to be tuned
+            self.min_distance = 0
+            self.time = time
             
+    def mutate(self, percentage):
+        self.nn.mutate(percentage)
     
 
         

@@ -8,17 +8,31 @@ class Controller:
         self.model = Model()
         self.view = View(self.model)
   
-    def run(self):        
+    def run_generation(self, gen_count): 
+        print('gen', gen_count)
         for i in range(100):
-            self.model.update()
-            self.view.update(self.model)
-            time.sleep(0.2)
+            self.model.update(i)
+            if gen_count % 3 == 0:
+                self.view.update(self.model)
+                # time.sleep(0.005)
+        time.sleep(1)
+        if gen_count % 20:
+            self.view.clear()
         
-        self.view.mainloop()     
+    def evaluate(self):
+        self.model.evaluate()
+        
+    def mutate(self):
+        self.model.mutate()               
 
 
 if __name__ == '__main__':
     c = Controller()
-    c.run()
     
+    for i in range(100):
+        c.run_generation(i)
+        c.evaluate()
+        c.mutate()        
+    
+    c.view.mainloop()
     

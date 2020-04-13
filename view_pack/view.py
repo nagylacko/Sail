@@ -4,8 +4,6 @@ from view_pack import ShipView, BuoyView, WindView
 
 class View:
     
-    GLOBAL_RATIO = 1
-    
     def __init__(self, model):
         self.root = tk.Tk()
         
@@ -22,7 +20,7 @@ class View:
         self.wind_view = WindView()
         
         self.root.title("Sail")
-        self.root.geometry("500x500") 
+        self.root.geometry("1200x800") 
         self.root.resizable(0, 0) 
         self.root.deiconify()
         self.root.update()
@@ -34,6 +32,12 @@ class View:
             sv.update(self.canvas, s)
         self.buoy_view.update(self.canvas, model.buoy)        
         self.root.update()
+        
+    def clear(self):
+        for sv in self.ship_views:
+            sv.clear(self.canvas)
+        self.buoy_view.clear(self.canvas)
+        self.wind_view.clear(self.canvas)
         
     def mainloop(self):
         self.root.mainloop() 

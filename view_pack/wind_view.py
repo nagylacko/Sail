@@ -20,6 +20,8 @@ class WindView:
                                         arrow=tk.LAST, fill='gray')
                 self.wind_view_list.append(wv)
  
-                
+    def clear(self, canvas):
+        for wv in self.wind_view_list:
+            canvas.delete(wv)            
                 
                 
