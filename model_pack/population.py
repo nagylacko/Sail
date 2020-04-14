@@ -1,32 +1,42 @@
 import copy
 from .ship import Ship
+from .neural_network import NeuralNetwork
 
 class Population:
     
-    def __init__(self, ship_count):
-        self.population = []        
-        for i in range(ship_count):
-            self.population.append(Ship(mode='random_nn'))
+    def __init__(self, population_count):
+        self.nn_population = []        
+        for i in range(population_count):
+            self.nn_population.append(NeuralNetwork())
             
     def __iter__(self):
-        return self.population.__iter__()    
+        return self.ship_population.__iter__()  
+    
+    def prepare_generation(self, buoys, wind, start_position):
+        self.ship_population = []
+        for nn in self.nn_population:
+            self.ship_population.append(Ship(nn, buoys, wind, start_position))
         
-    def update(self, buoys, time):
-        for ship in self.population:
-            ship.update(buoys, time)
+    def update(self, time):
+        for ship in self.ship_population:
+            ship.update(time)
             
     def evaluate(self):
-        self.population = sorted(self.population, key = lambda x: (x.min_distance, x.time))
+        ordered_ship_population = sorted(self.ship_population, 
+                   key=lambda x: (-x.curr_buoy_index, x.min_distance, x.time))
+        ordered_nn_population = []
+        for ship in ordered_ship_population:
+            ordered_nn_population.append(ship.nn)
+            print(ship.curr_buoy_index, ship.min_distance, ship.time) ####################
+        self.nn_population = ordered_nn_population
             
     def mutate(self):
-        new_population = []        
+        new_nn_population = []        
         
-        for ship in self.population[0:3]:
-            ship.__init__(mode='')
-            new_population.append(ship) # elitism
+        for nn in self.nn_population[0:3]:
+            new_nn_population.append(nn) # elitism
             for i in range(3):
-                temp_ship = copy.deepcopy(ship)
-                temp_ship.__init__(mode='')
-                temp_ship.mutate(30) # mutation
-                new_population.append(temp_ship)
-        self.population = new_population
+                temp_nn = copy.deepcopy(nn)
+                temp_nn.mutate(30) # mutation
+                new_nn_population.append(temp_nn)
+        self.nn_population = new_nn_population

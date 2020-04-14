@@ -6,18 +6,20 @@ from view_pack import View
 class Controller:
     def __init__(self):
         self.model = Model()
-        self.view = View(self.model)
+        self.view = View()
   
-    def run_generation(self, gen_count): 
-        print('gen', gen_count)
-        for i in range(100):
+    def run_generation(self, gui, generation_count): 
+        print(generation_count, ' .generation')
+        self.model.prepare_generation()
+        if gui:
+            self.view.prepare_generation(self.model)
+        for i in range(800):
             self.model.update(i)
-            if gen_count % 3 == 0:
+            if gui:
                 self.view.update(self.model)
-                # time.sleep(0.005)
-        time.sleep(1)
-        if gen_count % 20:
-            self.view.clear()
+                #time.sleep(0.005)
+        if gui:
+           self.view.clear()
         
     def evaluate(self):
         self.model.evaluate()
@@ -30,7 +32,10 @@ if __name__ == '__main__':
     c = Controller()
     
     for i in range(100):
-        c.run_generation(i)
+        gui = True if i % 10 == 0 else False
+        if i < 30:
+            gui = False
+        c.run_generation(gui, i)
         c.evaluate()
         c.mutate()        
     

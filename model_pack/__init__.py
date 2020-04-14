@@ -1,9 +1,9 @@
-from .model import *
-from .ship import *
-from .population import *
-from .wind import *
-from .buoy import *
-from .neural_network import *
+from .model import Model
+from .ship import Ship
+from .population import Population
+from .wind import Wind
+from .buoys import Buoys
+from .neural_network import NeuralNetwork
 
 
 

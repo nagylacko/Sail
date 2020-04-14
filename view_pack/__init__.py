@@ -1,5 +1,5 @@
-from .ship_view import *
-from .buoy_view import *
-from .wind_view import *
+from .ship_view import ShipView
+from .buoy_view import BuoyView
+from .wind_view import WindView
 
 from .view import *

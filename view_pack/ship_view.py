@@ -24,7 +24,7 @@ class ShipView:
         """
         ccenter = complex(ship.x, ship.y)        
         cangle = cmath.exp(ship.orientation * 1j)
-        hull= []
+        hull = []
         for x, y in self.hull:
             cc = cangle * complex(x, y) + ccenter
             hull.append([cc.real, cc.imag])
@@ -34,7 +34,7 @@ class ShipView:
         
         self.hull_view = canvas.create_polygon(hull, outline='red', fill='brown')
         
-        sail= []
+        sail = []
         for x, y in self.sail:
             cc = cangle * complex(x, y) + ccenter
             sail.append([cc.real, cc.imag])
@@ -46,5 +46,6 @@ class ShipView:
 
     def clear(self, canvas):
         canvas.delete(self.hull_view) 
+        canvas.delete(self.sail_view)
         
         
