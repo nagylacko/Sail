@@ -5,8 +5,8 @@ from .neural_network import NeuralNetwork
 class Ship:
     
     def __init__(self, mode):
-        self.x_coord = 100
-        self.y_coord = 200
+        self.x = 100
+        self.y = 200
         self.orientation = -(math.pi / 2) # angle in radians
         
         self.speed = 5
@@ -17,17 +17,16 @@ class Ship:
         self.min_distance = 100000 ##########
         self.time = 10000 ###################
         
-    def update(self, buoy, time):
+    def update(self, buoys, time):
         # updates controls by inputs
-        steer = self.nn.predict(self.calc_ship_buoy_angle(buoy))        
+        steer = self.nn.predict(self.calc_ship_buoy_angle(buoys[0]))        
         # move the ship
         self.move(steer)
         # record distance
-        self.record_distance(buoy, time)        
+        self.record_distance(buoys[0], time)        
         
     def calc_ship_buoy_angle(self, buoy):
-        cangle_buoy = complex(buoy.x_coord - self.x_coord,
-                              buoy.y_coord - self.y_coord)
+        cangle_buoy = complex(buoy.x - self.x, buoy.y - self.y)
         angle_buoy = cmath.phase(cangle_buoy)
         angle_diff = angle_buoy - self.orientation
         angle_diff %= (2 * math.pi)
@@ -47,12 +46,12 @@ class Ship:
         x_speed = cspeed.real
         y_speed = cspeed.imag
         
-        self.x_coord += x_speed * 1 # delta time factor needed
-        self.y_coord += y_speed * 1  
+        self.x += x_speed * 1 # delta time factor needed
+        self.y += y_speed * 1  
         
     def calc_ship_buoy_dist(self, buoy):
-        return math.sqrt(((buoy.x_coord - self.x_coord) ** 2) + 
-                         ((buoy.y_coord - self.y_coord) ** 2))
+        return math.sqrt(((buoy.x - self.x) ** 2) + 
+                         ((buoy.y - self.y) ** 2))
         
     def record_distance(self, buoy, time):
         self.min_distance = min(self.calc_ship_buoy_dist(buoy), self.min_distance)

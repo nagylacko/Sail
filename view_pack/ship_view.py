@@ -5,7 +5,7 @@ import cmath
 class ShipView:
     
     def __init__(self):
-        SIZE = 1
+        SIZE = 2
         # hull coordinates (ship center is in origo)
         hull = [[-7,-4],[3,-4],[8,0],[3,4],[-7,4]]
         # rescale by SIZE
@@ -22,7 +22,7 @@ class ShipView:
         offsets hull coordinates with ship center coordinates,
         updates canvas with new coordinates
         """
-        ccenter = complex(ship.x_coord, ship.y_coord)        
+        ccenter = complex(ship.x, ship.y)        
         cangle = cmath.exp(ship.orientation * 1j)
         hull= []
         for x, y in self.hull:

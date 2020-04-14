@@ -1,20 +1,22 @@
 
 
-# =============================================================================
-# class Buoy_new:
-#     
-#     def __init__(self):
-#         self.buoys = []
-#         
-#         class _Buoy:
-#             def
-#             self.x_coord = 400
-#         self.y_coord = 500
-# =============================================================================
-
-
-class Buoy:
+class Buoys:
     
     def __init__(self):
-        self.x_coord = 400
-        self.y_coord = 500
+        self.buoys = []
+        
+        self.buoys.append(_Buoy(400,500))
+        self.buoys.append(_Buoy(300,200))        
+        self.buoys.append(_Buoy(100,100))
+        
+    def __getitem__(self, index):
+        return self.buoys[index]
+        
+    def __iter__(self):
+        return self.buoys.__iter__()
+
+class _Buoy:
+    
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y

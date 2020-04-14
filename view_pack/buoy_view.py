@@ -6,13 +6,13 @@ class BuoyView:
         self.size = 8
         self.buoy_view = None
     
-    def update(self, canvas, buoy):
+    def update(self, canvas, buoys):
         
         if self.buoy_view is None:
-             self.buoy_view = canvas.create_oval(buoy.x_coord - (self.size/2),
-                                                 buoy.y_coord - (self.size/2),
-                                                 buoy.x_coord + (self.size/2),
-                                                 buoy.y_coord + (self.size/2), 
+             self.buoy_view = canvas.create_oval(buoys[0].x - (self.size/2),
+                                                 buoys[0].y - (self.size/2),
+                                                 buoys[0].x + (self.size/2),
+                                                 buoys[0].y + (self.size/2), 
                                                  fill = 'yellow')
         
     def clear(self, canvas):

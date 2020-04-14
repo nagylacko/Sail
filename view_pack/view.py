@@ -30,7 +30,7 @@ class View:
         self.wind_view.update(self.canvas, model.wind)
         for sv, s in zip(self.ship_views, model.population):
             sv.update(self.canvas, s)
-        self.buoy_view.update(self.canvas, model.buoy)        
+        self.buoy_view.update(self.canvas, model.buoys)        
         self.root.update()
         
     def clear(self):
