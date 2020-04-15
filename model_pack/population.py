@@ -13,13 +13,15 @@ class Population:
         return self.ship_population.__iter__()  
     
     def prepare_generation(self, buoys, wind, start_position):
+        self.finished = False
         self.ship_population = []
         for nn in self.nn_population:
             self.ship_population.append(Ship(nn, buoys, wind, start_position))
         
     def update(self, time):
         for ship in self.ship_population:
-            ship.update(time)
+             ship.update(time)                 
+        self.finished = all([ship.finished for ship in self.ship_population])
             
     def evaluate(self):
         ordered_ship_population = sorted(self.ship_population, 
@@ -27,7 +29,8 @@ class Population:
         ordered_nn_population = []
         for ship in ordered_ship_population:
             ordered_nn_population.append(ship.nn)
-            print(ship.curr_buoy_index, ship.min_distance, ship.time) ####################
+            print(ship.curr_buoy_index, ship.min_distance, ship.time) #!!!!!!!!!!!!!!!!!
+            print(ship.max_steer) #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         self.nn_population = ordered_nn_population
             
     def mutate(self):

@@ -21,11 +21,14 @@ class Ship:
         self.time = 0
         self.finished = False
         
+        self.max_steer = 0 #!!!!!!!!!!!!!!!!!!!!!!!!!
+        
     def update(self, time):
         if self.finished:
             return
         # updates controls by inputs
-        steer = self.nn.predict(self.calc_ship_buoy_angle())        
+        steer = self.nn.predict(self.calc_ship_buoy_angle())
+        self.max_steer = max(self.max_steer, steer) # !!!!!!!!@
         # moves the ship
         self.move(steer)
         # analyze position
@@ -45,7 +48,19 @@ class Ship:
     
     def move(self, steer):
         # update orientation by steer
-        self.orientation += steer #speed needs to be included
+        # max steer == 1
+        # max speed == 5
+        # max delta_orientaion == 1
+        delta_orientation = steer * self.speed / 5
+        self.prev_delt_orient = delta_orientation
+        if abs(delta_orientation) > 0.4: 
+            if self.prev_delt_orient > 0.4:
+                if delta_orientation < self.prev_delt_orient - 0.2:
+                    delta_orientation = self.prev_delt_orient - 0.2
+            if self.prev_delt_orient < -0.4:
+                if delta_orientation > self.prev_delt_orient + 0.2:
+                    delta_orientation = self.prev_delt_orient + 0.2
+        self.orientation += delta_orientation
         # update position according to controls
         cangle = cmath.exp(self.orientation * 1j) # angle in radians
         # cspeed = cangle * complex(0, -self.speed)
@@ -58,14 +73,13 @@ class Ship:
         
     def analyze_position(self, time):
         self.min_distance = min(self.calc_ship_buoy_dist(), self.min_distance)
-        # min distancen needs to be tuned!!!
         if self.min_distance < 10: 
             self.curr_buoy_index += 1
             if self.curr_buoy_index >= len(self.buoys):
                 self.finished = True
                 self.min_distance = 0
                 self.time = time
-                return            
+                return
             self.min_distance = self.calc_ship_buoy_dist() 
                 
     def calc_ship_buoy_dist(self):

@@ -1,15 +1,15 @@
+import numpy as np
 
 
 class Buoys:
     
-    def __init__(self):
+    def __init__(self, buoy_count):
         self.buoys = []
         
-        self.buoys.append(_Buoy(400,500))
-        self.buoys.append(_Buoy(300,200))        
-        self.buoys.append(_Buoy(600,100))
-        self.buoys.append(_Buoy(600,600))
-        self.buoys.append(_Buoy(60,100))
+        for i in range(buoy_count):
+            x = np.random.uniform(10, 700)
+            y = np.random.uniform(10, 700)
+            self.buoys.append(_Buoy(x,y))
         
     def __getitem__(self, index):
         return self.buoys[index]

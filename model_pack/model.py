@@ -1,4 +1,5 @@
 import math
+import numpy as np
 from .ship import Ship
 from .population import Population
 from .buoys import Buoys
@@ -12,10 +13,14 @@ class Model:
         self.population = Population(self.population_count)
 
     def prepare_generation(self):
-        self.buoys = Buoys()
+        buoy_count = np.random.randint(4,9)
+        self.buoys = Buoys(buoy_count)
         self.wind = Wind()
-        start_position = {'x': 100, 'y': 200, 'orient': -(math.pi / 2)}
-        self.population.prepare_generation(self.buoys, self.wind, start_position)        
+        start_position = {'x': np.random.uniform(100, 500), 
+                          'y': np.random.uniform(100, 500), 
+                          'orient': np.random.uniform(0, 2 * math.pi)}
+        self.population.prepare_generation(self.buoys, self.wind, 
+                                           start_position)        
         
     def update(self, time):
         self.population.update(time)

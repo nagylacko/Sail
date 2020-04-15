@@ -26,8 +26,8 @@ class View:
         for ship in model.population:
             self.ship_views.append(ShipView())
         self.buoy_views = []
-        for buoy in model.buoys:
-            self.buoy_views.append(BuoyView())
+        for i, buoy in enumerate(model.buoys):
+            self.buoy_views.append(BuoyView(i))
         self.wind_view = WindView()
         
     def update(self, model):        
@@ -41,7 +41,7 @@ class View:
     def clear(self):
         for ship_view in self.ship_views:
             ship_view.clear(self.canvas)
-        for buoy_view in self.ship_views:
+        for buoy_view in self.buoy_views:
             buoy_view.clear(self.canvas)
         self.wind_view.clear(self.canvas)
         
