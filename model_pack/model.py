@@ -1,6 +1,5 @@
 import math
 import numpy as np
-from .ship import Ship
 from .population import Population
 from .buoys import Buoys
 from .wind import Wind
@@ -9,11 +8,12 @@ from .wind import Wind
 class Model:
  
     def __init__(self):
-        self.population_count = 9
+        self.population_count = 50
         self.population = Population(self.population_count)
 
     def prepare_generation(self):
         buoy_count = np.random.randint(4,9)
+        print('Buoy count:', buoy_count)
         self.buoys = Buoys(buoy_count)
         self.wind = Wind()
         start_position = {'x': np.random.uniform(100, 500), 
@@ -30,5 +30,11 @@ class Model:
         
     def mutate(self):
         self.population.mutate()
+        
+    def save(self, filename):
+        self.population.save(filename)
+        
+    def load(self, filename, number):
+        self.population.load(filename, number)
         
 

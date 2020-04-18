@@ -26,8 +26,7 @@ class Ship:
         if self.finished:
             return
         # updates controls by inputs
-        controls = self.nn.predict(orientation=self.orientation,
-                                   buoy_angle=self.calc_ship_buoy_angle(),
+        controls = self.nn.predict(buoy_angle=self.calc_ship_buoy_angle(),
                                    buoy_distance=self.calc_ship_buoy_dist(),
                                    wind_angle=self.calc_ship_wind_angle(),
                                    ship_speed=self.speed)
@@ -40,7 +39,8 @@ class Ship:
         buoy = self.buoys[self.curr_buoy_index]
         cangle_buoy = complex(buoy.x - self.x, buoy.y - self.y)
         angle_buoy = cmath.phase(cangle_buoy)
-        return self.normalize_angle(angle_buoy)
+        angle_diff = angle_buoy - self.orientation
+        return self.normalize_angle(angle_diff)
     
     def calc_ship_wind_angle(self):
         angle_diff = cmath.phase(complex(self.wind.x, self.wind.y)) - self.orientation
@@ -67,18 +67,22 @@ class Ship:
 #         self.speed = controls['speed']
         if self.calc_ship_wind_angle() < -2.356 or 2.356 < self.calc_ship_wind_angle():
             # self.speed = min(self.speed, 0.5)
-            self.speed = 5
+            self.speed = 0.5
         else:
             # self.speed = min(self.speed, 5)
             self.speed = 5
         # update orientation by steer
-        steer = controls['steer']
+        steer = controls['steer'] 
+        if abs(steer) > 0.1:
+            self.speed /= 2
 # =============================================================================
-#         if abs(steer) > 0.1: # penalty for turning
-#             self.speed /= 2
+#         if self.prev_steer > 0.1 and steer < 0:
+#             steer = self.prev_steer / 2
+#         elif self.prev_steer < -0.1 and steer > 0:
+#             steer = self.prev_steer / 2
 # =============================================================================
-        #print('steer', steer)
-        #print('speed', self.speed)
+        print('steer', steer)
+        print('speed', self.speed)
 #         self.prev_steer = steer
         self.orientation += steer 
         # update position according to controls

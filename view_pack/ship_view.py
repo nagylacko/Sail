@@ -1,11 +1,10 @@
-import tkinter as tk
 import cmath
 
 
 class ShipView:
     
     def __init__(self):
-        SIZE = 2
+        SIZE = 2 # Common size factor of ship elements
         # hull coordinates (ship center is in origo)
         hull = [[-7,-4],[3,-4],[8,0],[3,4],[-7,4]]
         # rescale by SIZE
@@ -18,9 +17,9 @@ class ShipView:
         
     def update(self, canvas, ship):   
         """
-        rotates hull coordinates with ship orientation,
-        offsets hull coordinates with ship center coordinates,
-        updates canvas with new coordinates
+        Rotates hull coordinates with ship orientation,
+        Offsets hull coordinates with ship center coordinates,
+        Updates canvas with new coordinates
         """
         ccenter = complex(ship.x, ship.y)        
         cangle = cmath.exp(ship.orientation * 1j)
