@@ -26,10 +26,7 @@ class Ship:
         if self.finished:
             return
         # updates controls by inputs
-        controls = self.nn.predict(orientation=self.orientation,
-                                   buoy_angle=self.calc_ship_buoy_angle(),
-                                   buoy_distance=self.calc_ship_buoy_dist(),
-                                   wind_angle=self.calc_ship_wind_angle(),
+        controls = self.nn.predict(self.calc_ship_buoy_angle(),
                                    ship_speed=self.speed)
         # moves the ship
         self.move(controls)
@@ -38,21 +35,15 @@ class Ship:
         
     def calc_ship_buoy_angle(self):
         buoy = self.buoys[self.curr_buoy_index]
-        cangle_buoy = complex(buoy.x - self.x, buoy.y - self.y)
-        angle_buoy = cmath.phase(cangle_buoy)
-        return self.normalize_angle(angle_buoy)
+        angle_buoy = cmath.phase(complex(buoy.x - self.x, buoy.y - self.y))
+        return self.normalize_angle(angle_buoy - self.orientation)
     
     def calc_ship_wind_angle(self):
         angle_diff = cmath.phase(complex(self.wind.x, self.wind.y)) - self.orientation
         return self.normalize_angle(angle_diff)
     
     def normalize_angle(self, angle):
-        angle %= (2 * math.pi)
-        if angle > math.pi:
-            return -2 * math.pi + angle
-        if angle < -math.pi:
-            return 2 * math.pi - angle 
-        return angle
+        return cmath.phase(cmath.rect(1, angle))
     
     def move(self, controls):
         # update ship speed by wind
@@ -79,7 +70,9 @@ class Ship:
 # =============================================================================
         #print('steer', steer)
         #print('speed', self.speed)
-#         self.prev_steer = steer
+        D = -0.5
+        steer += D * (steer - self.prev_steer)
+        self.prev_steer = steer
         self.orientation += steer 
         # update position according to controls
         cangle = cmath.exp(self.orientation * 1j) # angle in radians

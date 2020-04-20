@@ -46,7 +46,7 @@ if __name__ == '__main__':
     simulation_time = 1000
     for i in range(generation_count):
         gui = False
-        if i > 60:
+        if i > 35:
             gui = True
         c.run_generation(gui, i, simulation_time)
         c.evaluate()
