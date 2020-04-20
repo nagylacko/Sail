@@ -27,7 +27,7 @@ class Ship:
             return
         # updates controls by inputs
         controls = self.nn.predict(self.calc_ship_buoy_angle(),
-                                   ship_speed=self.speed)
+                                   self.calc_ship_wind_angle())
         # moves the ship
         self.move(controls)
         # analyze position
@@ -39,38 +39,35 @@ class Ship:
         return self.normalize_angle(angle_buoy - self.orientation)
     
     def calc_ship_wind_angle(self):
-        angle_diff = cmath.phase(complex(self.wind.x, self.wind.y)) - self.orientation
-        return self.normalize_angle(angle_diff)
+        angle_wind = cmath.phase(complex(self.wind.x, self.wind.y)) 
+        return self.normalize_angle(angle_wind - self.orientation)
     
     def normalize_angle(self, angle):
         return cmath.phase(cmath.rect(1, angle))
     
     def move(self, controls):
         # update ship speed by wind
-        # 135° == 2.356
 # =============================================================================
-#         print('ship angle:', self.orientation*360/2/math.pi)
-#         print('wind angle;', cmath.phase(complex(self.wind.x, self.wind.y))*360/2/math.pi)
-#         print('angle diff:', self.calc_ship_wind_angle()*360/2/math.pi)
-#         print('angle diff:', self.calc_ship_wind_angle())
-#         print('')
-# =============================================================================       
-#         self.speed = controls['speed']
-        if self.calc_ship_wind_angle() < -2.356 or 2.356 < self.calc_ship_wind_angle():
-            # self.speed = min(self.speed, 0.5)
-            self.speed = 5
+#         # 135° == 2.356
+#         if self.calc_ship_wind_angle() < -2.356 or 2.356 < self.calc_ship_wind_angle():
+#             self.speed = 0.5
+#         else:
+#             # self.speed = min(self.speed, 5)
+#             self.speed = 5
+# =============================================================================
+        wind_angle = self.calc_ship_wind_angle()
+        if wind_angle >= 0:
+            self.speed = 6 * (math.pi - wind_angle) / math.pi 
         else:
-            # self.speed = min(self.speed, 5)
-            self.speed = 5
+            self.speed = 6 * (wind_angle + math.pi) / math.pi
+        self.speed += 1
         # update orientation by steer
         steer = controls['steer']
-# =============================================================================
-#         if abs(steer) > 0.1: # penalty for turning
-#             self.speed /= 2
-# =============================================================================
+        if abs(steer) > 0.1: # penalty for turning
+            self.speed /= 2
         #print('steer', steer)
         #print('speed', self.speed)
-        D = -0.5
+        D = -0.7
         steer += D * (steer - self.prev_steer)
         self.prev_steer = steer
         self.orientation += steer 

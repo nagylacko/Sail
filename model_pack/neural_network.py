@@ -5,7 +5,7 @@ import scipy as sp
 class NeuralNetwork:
     
     def __init__(self):
-        layer_sizes = [1,4,1]
+        layer_sizes = [2,6,4,1]
         
         self.weights = []
         self.biases = []
@@ -13,8 +13,8 @@ class NeuralNetwork:
             self.weights.append(np.random.uniform(-0.1, 0.1, size=(layer_sizes[i], layer_sizes[i+1])))
             self.biases.append(np.random.uniform(-0.1, 0.1, size=layer_sizes[i + 1]))
             
-    def predict(self, ship_buoy_angle, ship_speed):
-        layer = np.array([ship_buoy_angle])
+    def predict(self, ship_buoy_angle, wind_angle):
+        layer = np.array([ship_buoy_angle, wind_angle])
         for w, b in zip(self.weights, self.biases):
             layer = np.matmul(layer, w)
             layer = np.add(layer, b)
