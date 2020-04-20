@@ -29,43 +29,17 @@ class View:
         self.next_gen_but.pack(side='top')
         self.clear_button = tk.Button(self.left_frame, text="Clear", padx=5, pady=5)
         self.clear_button.pack()
-        self.info_label = tk.Label(self.left_frame, text='info label', bg='yellow', height=30, padx=10, pady=10)
+        self.info_label = tk.Label(self.left_frame, text='info label', bg='yellow', height=42, padx=10, pady=10)
         self.info_label.pack(side='bottom')
         
         # Right Frame with Canvas
         self.right_frame = tk.Frame(self.root)
         self.right_frame.pack(fill=None, expand=False)
-        self.canvas = tk.Canvas(master=self.right_frame, width=1100, height=750, bg='blue')
-        self.canvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1)       
-
+        self.canvas = tk.Canvas(master=self.right_frame, width=1160, height=750, bg='blue')
+        self.canvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1)  
         
         self.root.update()
             
-    def __init__old(self):
-        self.root = tk.Tk()
-        
-        # Main Frame with Canvas
-        self.frame = tk.Frame(self.root)
-        self.frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=1)        
-        self.canvas = tk.Canvas(master=self.frame, bg='blue')
-        self.canvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
-        
-        # Secondary Frame with Buttons
-        self.frame2 = tk.Frame(self.root)
-        self.frame2.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)       
-        self.plotBut = tk.Button(self.frame2, text="Stop")
-        self.plotBut['command'] = lambda: self.stop_update()
-        self.plotBut.pack(side="top",fill=tk.BOTH)
-        self.clearButton = tk.Button(self.frame2, text="Clear")
-        self.clearButton.pack(side="top",fill=tk.BOTH)        
-
-        # Main Window settings        
-        self.root.title("Sail")
-        self.root.geometry("1200x800") 
-        self.root.resizable(0, 0) 
-        self.root.deiconify()
-        self.root.update()
-    
     def prepare_generation(self, model):
         self.stop_display = False
         self.ship_views = []

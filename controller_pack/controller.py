@@ -14,6 +14,7 @@ class Controller:
         # this function must be rethinked!!!!!!!!!!!!!!!!!!
         print('------------------------------------------')
         print(generation_index, '.generation')
+        self.view.label['text'] = str(generation_index) + '. generation'
         self.model.prepare_generation()
         if gui:
             self.view.prepare_generation(self.model)
@@ -44,8 +45,8 @@ if __name__ == '__main__':
     generation_count = 200
     simulation_time = 1000
     for i in range(generation_count):
-        gui = True
-        if i > 30:
+        gui = False
+        if i > 60:
             gui = True
         c.run_generation(gui, i, simulation_time)
         c.evaluate()

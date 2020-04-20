@@ -7,8 +7,8 @@ class Buoys:
         self.buoys = []
         
         for i in range(buoy_count):
-            x = np.random.uniform(10, 700)
-            y = np.random.uniform(10, 700)
+            x = np.random.uniform(100, 1060)
+            y = np.random.uniform(100, 650)
             self.buoys.append(_Buoy(x,y))
         
     def __getitem__(self, index):
