@@ -6,12 +6,18 @@ from .wind import Wind
 
 
 class Model:
- 
+    """
+    Model handles all objects in the simulation
+    """
     def __init__(self):
         self.population_count = 50
         self.population = Population(self.population_count)
 
     def prepare_generation(self):
+        """
+        Randomly initializes ship start postitions, wind direction 
+        and buoy positions at start of each generation
+        """
         buoy_count = np.random.randint(4,9)
         print('Buoy count:', buoy_count)
         self.buoys = Buoys(buoy_count)

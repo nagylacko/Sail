@@ -2,7 +2,9 @@ import numpy as np
 
 
 class Buoys:
-    
+    """
+    Model of the list of target buoys
+    """    
     def __init__(self, buoy_count):
         self.buoys = []
         
@@ -21,7 +23,9 @@ class Buoys:
         return len(self.buoys)
 
 class _Buoy:
-    
+    """
+    Model of single buoy4
+    """
     def __init__(self, x, y):
         self.x = x
         self.y = y

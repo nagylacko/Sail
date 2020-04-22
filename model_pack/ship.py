@@ -7,6 +7,10 @@ class Ship:
     Model of a ship
     """    
     def __init__(self,neural_network, buoys, wind, start_position):
+        """
+        Initializes ship model by setting up the neural network for 
+        controlling the ship, the target buoys and the wind
+        """
         self.nn = neural_network
         
         self.buoys = buoys
@@ -26,17 +30,8 @@ class Ship:
                 
     def update(self, time):
         """
-        
-
-        Parameters
-        ----------
-        time : TYPE
-            DESCRIPTION.
-
-        Returns
-        -------
-        None.
-
+        Calls the neural network to control the ship and calls the self.move
+        method which updates the ship model
         """
         if self.finished:
             return

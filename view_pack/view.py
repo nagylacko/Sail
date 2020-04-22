@@ -63,11 +63,11 @@ class View:
     def update(self, model):
         """
         Calls update method of all view objects        
-        Updates and displays only 20 ship_views at most
+        Updates and displays only 10 ship_views at most
         """
         if not self.display:
             return        
-        for i in range(min(len(self.ship_views), 20)): 
+        for i in range(min(len(self.ship_views), 10)): 
             self.ship_views[i].update(self.canvas, model.population[i])
         self.root.update()
         
@@ -81,8 +81,5 @@ class View:
     def mainloop(self):
         self.root.mainloop() 
 
-
-if __name__ == "__main__":
-    v = View()
-        
+       
         

@@ -10,7 +10,6 @@ class Controller:
         self.view = View()
   
     def run_generation(self, display, generation_index, simulation_time):
-        # this function must be rethinked!!!!!!!!!!!!!!!!!!
         print('------------------------------------------')
         print(generation_index, '.generation')
         self.model.prepare_generation()
@@ -20,7 +19,10 @@ class Controller:
             self.view.update(self.model)
             if self.model.population.finished:
                 break
-            message = (str(i+1) + "/" + str(simulation_time) + " Tick of simulation [" + "|" * int(30 * i / simulation_time) + " " * int(30 * (1 - (i / simulation_time))) + "]  ")
+            message = (str(i+1) + "/" + str(simulation_time) + 
+                       " Simulation time |" + 
+                       "|" * int(30 * i / simulation_time) + 
+                       "." * int(30 * (1 - (i / simulation_time))) + "|  ")
             sys.stdout.write('\r' + message)
         print('')
         self.view.clear()
@@ -33,6 +35,9 @@ class Controller:
 
 
 if __name__ == '__main__':
+    """
+    Main function
+    """
     np.random.seed(0)
     c = Controller()
     
@@ -40,7 +45,7 @@ if __name__ == '__main__':
     simulation_time = 1000
     for i in range(generation_count):
         display = False
-        if i > 3:
+        if i > 50:
             display = True
         c.run_generation(display, i, simulation_time)
         c.evaluate()
@@ -56,9 +61,7 @@ if __name__ == '__main__':
 #     for i in range(generation_count):
 #         gui = True
 #         c.run_generation(gui, i, simulation_time)
-# =============================================================================
-
-                   
+# =============================================================================                   
   
     c.view.mainloop()
     

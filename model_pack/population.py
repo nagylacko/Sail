@@ -3,7 +3,10 @@ from .ship import Ship
 from .neural_network import NeuralNetwork
 
 class Population:
-    
+    """
+    Population contains all neural networks through the evolution process
+    During simulation Population contains all ship models
+    """    
     def __init__(self, population_count):
         self.nn_population = []        
         for i in range(population_count):
@@ -30,21 +33,38 @@ class Population:
         self.finished = all([ship.finished for ship in self.ship_population])
             
     def evaluate(self):
+        """
+        Orders the list of ship by fitness
+        Fitness is based on the number of buoys reached, the minimum distance
+        to the next target buoy and the time neeeded to reach all the buoys
+        """
         ordered_ship_population = sorted(self.ship_population, 
                    key=lambda x: (-x.curr_buoy_index, x.min_distance, x.time))
         ordered_nn_population = []
         for ship in ordered_ship_population:
             ordered_nn_population.append(ship.nn)            
         self.nn_population = ordered_nn_population
+        print('Best results:')
+        print('{:<6s} {:<10s} {:<10s}'.format('Buoys', 'Distance', 'Time'))
+        # print('Buoys\tDistance\tTime')
         for i in range(5):
             ship = ordered_ship_population[i]
-            print(ship.curr_buoy_index, round(ship.min_distance, 2), ship.time) #!!!
+            print('{:<6s} {:<10s} {:<10s}'.format(
+                                            str(ship.curr_buoy_index), 
+                                            str(round(ship.min_distance, 2)), 
+                                            str(ship.time)))
             
     def mutate(self):
+        """
+        Creates the new generation based on the results of the simulation
+        Elitism: the best 5 instances goes directly to the next generation
+        The other 45 instances created by mutating the best 5
+        """
         new_nn_population = []        
         
         for nn in self.nn_population[0:5]:
             new_nn_population.append(nn) # elitism
+        for nn in self.nn_population[0:5]:
             for i in range(9):
                 temp_nn = copy.deepcopy(nn)
                 temp_nn.mutate(30) # mutation
