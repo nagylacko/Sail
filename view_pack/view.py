@@ -54,8 +54,7 @@ class View:
             self.ship_views.append(ShipView())
         self.buoy_views = []
         for i, buoy in enumerate(model.buoys):
-            self.buoy_views.append(BuoyView(i))
-        
+            self.buoy_views.append(BuoyView(self.canvas, buoy, i))        
         self.root.update()
         
     def stop_update(self):
@@ -67,11 +66,9 @@ class View:
         Updates and displays only 20 ship_views at most
         """
         if not self.display:
-            return
+            return        
         for i in range(min(len(self.ship_views), 20)): 
             self.ship_views[i].update(self.canvas, model.population[i])
-        for buoy_view, buoy in zip(self.buoy_views, model.buoys):
-            buoy_view.update(self.canvas, buoy)        
         self.root.update()
         
     def clear(self):

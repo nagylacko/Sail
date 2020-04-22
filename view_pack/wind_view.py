@@ -16,8 +16,6 @@ class WindView:
             self.wind_views.append(wv)
      
     def clear(self, canvas):
-        if self.wind_views is None:
-            return
         for wv in self.wind_views:
             canvas.delete(wv) 
         self.wind_views = None  
