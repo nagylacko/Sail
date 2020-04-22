@@ -1,16 +1,17 @@
+import math, cmath
 import numpy as np
 
 class Wind:
-    
+    """
+    Model of wind
+    """
     def __init__(self):
-        self.x = np.random.uniform(-10, 10)
-        self.y = np.random.uniform(-10, 10)
+        """
+        Randomly initializes wind orientation and calculates x and y vectors
+        Vectors will be used by View for display
+        """
+        self.orientation = np.random.uniform(-math.pi, math.pi)
+        self.x = cmath.exp(self.orientation * 1j).real
+        self.y = cmath.exp(self.orientation * 1j).imag
+
         
-    def change_randomly(self, percentage):
-        percentage /= 100
-        self.x *= np.random.uniform(1 - percentage, 1 + percentage)
-        self.y *= np.random.uniform(1 - percentage, 1 + percentage)
-        
-    def get_view_data(self):
-        return {'magnitude': self.magnitude,
-                'orientation': self.orientation}

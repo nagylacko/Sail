@@ -17,7 +17,7 @@ class View:
         # Top Frame with Label
         self.top_frame = tk.Frame(self.root)
         self.top_frame.pack(side=tk.TOP, fill=None, expand=False)
-        self.label = tk.Label(self.top_frame, text='X. Generation', font=("Arial Bold", 20), width=80, bg='yellow')
+        self.label = tk.Label(self.top_frame, text='X. Generation', font=("Arial Bold", 20), width=80)
         self.label.pack(side='bottom', fill=None, expand=False)
         
         # Left Frame with Controls
@@ -27,6 +27,8 @@ class View:
         self.next_gen_but = tk.Button(self.left_frame, text="Next Generation", padx=5, pady=5)
         self.next_gen_but['command'] = lambda: self.stop_update()
         self.next_gen_but.pack(side='top')
+        
+        
         self.clear_button = tk.Button(self.left_frame, text="Clear", padx=5, pady=5)
         self.clear_button.pack()
         self.info_label = tk.Label(self.left_frame, text='info label', bg='yellow', height=42, padx=10, pady=10)
@@ -40,25 +42,30 @@ class View:
         
         self.root.update()
             
-    def prepare_generation(self, model):
-        self.stop_display = False
+    def prepare_generation(self, model, display, generation_index):
+        """
+        Initializes all view objects for display
+        """
+        self.display = display
+        self.label['text'] = str(generation_index) + '. generation'
         self.ship_views = []
-        for i in range(len(model.population)):
+        for s in model.population:
             self.ship_views.append(ShipView())
         self.buoy_views = []
         for i, buoy in enumerate(model.buoys):
             self.buoy_views.append(BuoyView(i))
         self.wind_view = WindView()
+        self.root.update()
         
     def stop_update(self):
-        self.stop_display = True
+        self.display = False
         
     def update(self, model):
         """
         Calls update method of all view objects        
         Updates and displays only 20 ship_views at most
         """
-        if self.stop_display:
+        if not self.display:
             return
         self.wind_view.update(self.canvas, model.wind)
         for i in range(min(len(self.ship_views), 20)): 

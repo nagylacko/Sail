@@ -3,7 +3,9 @@ from .neural_network import NeuralNetwork
 
 
 class Ship:
-    
+    """
+    Model of a ship
+    """    
     def __init__(self,neural_network, buoys, wind, start_position):
         self.nn = neural_network
         
@@ -23,6 +25,19 @@ class Ship:
         self.finished = False
                 
     def update(self, time):
+        """
+        
+
+        Parameters
+        ----------
+        time : TYPE
+            DESCRIPTION.
+
+        Returns
+        -------
+        None.
+
+        """
         if self.finished:
             return
         # updates controls by inputs
@@ -34,46 +49,58 @@ class Ship:
         self.analyze_position(time)                   
         
     def calc_ship_buoy_angle(self):
+        """
+        Calculates target buoy orientation relative to ship
+        """
         buoy = self.buoys[self.curr_buoy_index]
         angle_buoy = cmath.phase(complex(buoy.x - self.x, buoy.y - self.y))
         return self.normalize_angle(angle_buoy - self.orientation)
     
     def calc_ship_wind_angle(self):
-        angle_wind = cmath.phase(complex(self.wind.x, self.wind.y)) 
-        return self.normalize_angle(angle_wind - self.orientation)
+        """
+        Calculates wind orientation relative to ship
+        """
+        return self.normalize_angle(self.wind.orientation - self.orientation) 
     
     def normalize_angle(self, angle):
-        return cmath.phase(cmath.rect(1, angle))
+        """
+        Moves input angle into [-pi,pi] interval
+        """
+        if -math.pi < angle < math.pi:
+            return angle
+        else:
+            return cmath.phase(cmath.exp(angle * 1j))                           
     
     def move(self, controls):
-        # update ship speed by wind
-# =============================================================================
-#         # 135° == 2.356
-#         if self.calc_ship_wind_angle() < -2.356 or 2.356 < self.calc_ship_wind_angle():
-#             self.speed = 0.5
-#         else:
-#             # self.speed = min(self.speed, 5)
-#             self.speed = 5
-# =============================================================================
+        """
+        Updates ship speed, orientation and position due to current state, 
+        wind and controls        
+        Parameters:
+        - controls: map - The predicted output from the neural network 
+        Returns:
+        - None
+        Side effects:
+        - self.speed, self.prev_steer, self.orientation, self.orientation,
+          self.x, self.y
+        """
+        # Update ship speed by wind
         wind_angle = self.calc_ship_wind_angle()
         if wind_angle >= 0:
             self.speed = 6 * (math.pi - wind_angle) / math.pi 
         else:
             self.speed = 6 * (wind_angle + math.pi) / math.pi
         self.speed += 1
-        # update orientation by steer
+        # Update orientation by steer
         steer = controls['steer']
         if abs(steer) > 0.1: # penalty for turning
             self.speed /= 2
-        #print('steer', steer)
-        #print('speed', self.speed)
+        # PID!!!!!!!!!!  
         D = -0.7
         steer += D * (steer - self.prev_steer)
         self.prev_steer = steer
         self.orientation += steer 
-        # update position according to controls
+        # Update position according to controls
         cangle = cmath.exp(self.orientation * 1j) # angle in radians
-        # cspeed = cangle * complex(0, -self.speed)
         cspeed = cangle * complex(self.speed, 0)
         x_speed = cspeed.real
         y_speed = cspeed.imag        
@@ -81,6 +108,13 @@ class Ship:
         self.y += y_speed
         
     def analyze_position(self, time):
+        """
+        Calculates distance to the target buoy
+        Counts the reached buoys
+        Records the time needed to reach all the buoys
+        
+        These results are the basis to specify fitness of the ship
+        """
         self.min_distance = min(self.calc_ship_buoy_dist(), self.min_distance)
         if self.min_distance < 10: 
             self.curr_buoy_index += 1
@@ -92,9 +126,11 @@ class Ship:
             self.min_distance = self.calc_ship_buoy_dist() 
                 
     def calc_ship_buoy_dist(self):
+        """
+        Calculates the target buoy distance from ship
+        """
         buoy = self.buoys[self.curr_buoy_index]
-        return math.sqrt(((buoy.x - self.x) ** 2) + 
-                         ((buoy.y - self.y) ** 2))    
+        return math.sqrt(((buoy.x - self.x) ** 2) + ((buoy.y - self.y) ** 2))    
     
 
         
