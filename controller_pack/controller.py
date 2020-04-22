@@ -40,7 +40,7 @@ if __name__ == '__main__':
     simulation_time = 1000
     for i in range(generation_count):
         display = False
-        if i > 2:
+        if i > 3:
             display = True
         c.run_generation(display, i, simulation_time)
         c.evaluate()

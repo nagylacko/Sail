@@ -48,13 +48,14 @@ class View:
         """
         self.display = display
         self.label['text'] = str(generation_index) + '. generation'
+        self.wind_view = WindView(self.canvas, model.wind)
         self.ship_views = []
         for s in model.population:
             self.ship_views.append(ShipView())
         self.buoy_views = []
         for i, buoy in enumerate(model.buoys):
             self.buoy_views.append(BuoyView(i))
-        self.wind_view = WindView()
+        
         self.root.update()
         
     def stop_update(self):
@@ -67,7 +68,6 @@ class View:
         """
         if not self.display:
             return
-        self.wind_view.update(self.canvas, model.wind)
         for i in range(min(len(self.ship_views), 20)): 
             self.ship_views[i].update(self.canvas, model.population[i])
         for buoy_view, buoy in zip(self.buoy_views, model.buoys):
