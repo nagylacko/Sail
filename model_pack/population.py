@@ -71,6 +71,11 @@ class Population:
                 new_nn_population.append(temp_nn)
         self.nn_population = new_nn_population
         
+    def prepare_test(self, buoys, wind, start_position):
+        self.finished = False
+        self.ship_population = [Ship(self.nn_population[0], buoys, wind, 
+                                     start_position)]        
+            
     def save(self, filename):
         self.nn_population[0].save(filename)
         

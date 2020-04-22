@@ -13,5 +13,4 @@ class Wind:
         self.orientation = np.random.uniform(-math.pi, math.pi)
         self.x = cmath.exp(self.orientation * 1j).real
         self.y = cmath.exp(self.orientation * 1j).imag
-
-        
+    
