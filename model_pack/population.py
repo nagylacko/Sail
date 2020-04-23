@@ -61,13 +61,14 @@ class Population:
         The other 45 instances created by mutating the best 5
         """
         new_nn_population = []        
-        
+        # elitism
         for nn in self.nn_population[0:5]:
-            new_nn_population.append(nn) # elitism
+            new_nn_population.append(nn) 
+        # mutation
         for nn in self.nn_population[0:5]:
             for i in range(9):
                 temp_nn = copy.deepcopy(nn)
-                temp_nn.mutate(30) # mutation
+                temp_nn.mutate(30) 
                 new_nn_population.append(temp_nn)
         self.nn_population = new_nn_population
         

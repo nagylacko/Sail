@@ -1,3 +1,4 @@
+import time
 import tkinter as tk
 from .ship_view import ShipView
 from .buoy_view import BuoyView
@@ -42,13 +43,15 @@ class View:
         
         self.root.update()
             
-    def prepare_generation(self, model, display, generation_index=-1):
+    def prepare_generation(self, model, display, generation_index, test):
         """
         Initializes all view objects for display
         """
         self.display = display
-        if generation_index == -1:
-            self.label['text'] = 'Test'
+        self.test = test
+        if test:
+            self.label['text'] = ('Test of ' + str(generation_index) + 
+                                  '. generation')
         else:
             self.label['text'] = str(generation_index) + '. generation'
         self.wind_view = WindView(self.canvas, model.wind)
@@ -63,7 +66,7 @@ class View:
     def stop_update(self):
         self.display = False
         
-    def update(self, model):
+    def update(self, model, time_):
         """
         Calls update method of all view objects        
         Updates and displays only 10 ship_views at most
@@ -72,7 +75,14 @@ class View:
             return        
         for i in range(min(len(self.ship_views), 10)): 
             self.ship_views[i].update(self.canvas, model.population[i])
+        time_label = self.canvas.create_text(80, 30, 
+                                             text='Time: ' + str(time_), 
+                                             font='Helvetica 20 bold', 
+                                             fill='yellow')
         self.root.update()
+        time.sleep(0.02)
+        self.canvas.delete(time_label)
+        
         
     def clear(self):
         for ship_view in self.ship_views:

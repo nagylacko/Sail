@@ -45,40 +45,33 @@ class Model:
         
     def prepare_test(self, test_id):
         """
-        
-
-        Returns
-        -------
-        None.
-
+        Initializes ship start postitions, wind direction and buoy positions 
+        for testing
         """
         self.wind = Wind()
-        self.wind.orientation = 0
-        self.wind.x = 1
-        self.wind.y = 0
         self.buoys = Buoys(1)
-        
+        self.buoys[0].x = 1000
+        self.buoys[0].y = 380
+        start_position = {'x': 100, 
+                         'y': 380, 
+                         'orient': 0}        
         if test_id == 0: 
-            self.buoys[0].x = 1000
-            self.buoys[0].y = 375
-            start_position = {'x': 100, 
-                             'y': 375, 
-                             'orient': 0}
-            self.population.prepare_test(self.buoys, self.wind, start_position)           
-           
-        elif test_id == 1:            
-            self.buoys[0].x = 1000
-            self.buoys[0].y = 375
-            start_position = {'x': 100, 
-                             'y': 375, 
-                             'orient': 0}
-            self.population.prepare_test(self.buoys, self.wind, start_position) 
-        
+            # downwind
+            self.wind.orientation = 0
+            self.wind.x = 1
+            self.wind.y = 0           
+        elif test_id == 1:  
+            # upwind
+            self.wind.orientation = math.pi
+            self.wind.x = -1
+            self.wind.y = 0        
         elif test_id == 2:
-            self.buoys[0].x = 1000
-            self.buoys[0].y = 375
-            start_position = {'x': 100, 
-                             'y': 375, 
-                             'orient': 0}
-            self.population.prepare_test(self.buoys, self.wind, start_position) 
+            # cross-wind
+            self.wind.orientation = math.pi / 2
+            self.wind.x = 0
+            self.wind.y = 1 
+        else:
+            raise NotImplementedError('Test case no. ' + 
+                                      '{} is not implemented'.format(test_id))
+        self.population.prepare_test(self.buoys, self.wind, start_position)
 
