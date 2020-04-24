@@ -26,6 +26,11 @@ class Population:
         self.ship_population = []
         for nn in self.nn_population:
             self.ship_population.append(Ship(nn, buoys, wind, start_position))
+            
+    def prepare_test(self, buoys, wind, start_position):
+        self.finished = False
+        self.ship_population = [Ship(self.nn_population[0], buoys, wind, 
+                                     start_position)]
         
     def update(self, time):
         for ship in self.ship_population:
@@ -70,12 +75,7 @@ class Population:
                 temp_nn = copy.deepcopy(nn)
                 temp_nn.mutate(30) 
                 new_nn_population.append(temp_nn)
-        self.nn_population = new_nn_population
-        
-    def prepare_test(self, buoys, wind, start_position):
-        self.finished = False
-        self.ship_population = [Ship(self.nn_population[0], buoys, wind, 
-                                     start_position)]        
+        self.nn_population = new_nn_population            
             
     def save(self, filename):
         self.nn_population[0].save(filename)

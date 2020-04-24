@@ -49,12 +49,12 @@ class View:
         
         self.root.update()
             
-    def prepare_generation(self, model, display, generation_index, test):
+    def prepare_generation(self, model, display, generation_index, 
+                           test=False):
         """
         Initializes all view objects for display
         """
         self.display = display
-        self.test = test
         if test:
             self.label['text'] = ('Test of ' + str(generation_index) + 
                                   '. generation')

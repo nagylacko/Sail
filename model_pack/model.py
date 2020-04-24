@@ -26,22 +26,7 @@ class Model:
                           'y': np.random.uniform(100, 650), 
                           'orient': np.random.uniform(0, 2 * math.pi)}
         self.population.prepare_generation(self.buoys, self.wind, 
-                                           start_position)        
-        
-    def update(self, time):
-        self.population.update(time)
-        
-    def evaluate(self):
-        self.population.evaluate()
-        
-    def mutate(self):
-        self.population.mutate()
-        
-    def save(self, filename):
-        self.population.save(filename)
-        
-    def load(self, filename, number):
-        self.population.load(filename, number)
+                                           start_position) 
         
     def prepare_test(self, test_id):
         """
@@ -72,4 +57,21 @@ class Model:
             raise NotImplementedError('Test case no. ' + 
                                       '{} is not implemented'.format(test_id))
         self.population.prepare_test(self.buoys, self.wind, start_position)
+        
+    def update(self, time):
+        self.population.update(time)
+        
+    def evaluate(self):
+        self.population.evaluate()
+        
+    def mutate(self):
+        self.population.mutate()
+        
+    def save(self, filename):
+        self.population.save(filename)
+        
+    def load(self, filename, number):
+        self.population.load(filename, number)
+        
+    
 
