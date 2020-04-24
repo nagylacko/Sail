@@ -52,9 +52,7 @@ class Model:
         self.buoys = Buoys(1)
         self.buoys[0].x = 1000
         self.buoys[0].y = 380
-        start_position = {'x': 100, 
-                         'y': 380, 
-                         'orient': 0}        
+        start_position = {'x': 100, 'y': 380, 'orient': 0.18}        
         if test_id == 0: 
             # downwind
             self.wind.orientation = 0

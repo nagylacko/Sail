@@ -51,7 +51,7 @@ class Population:
             ship = ordered_ship_population[i]
             print('{:<6s} {:<10s} {:<10s}'.format(
                                             str(ship.curr_buoy_index), 
-                                            str(round(ship.min_distance, 2)), 
+                                            str(int(ship.min_distance)), 
                                             str(ship.time)))
             
     def mutate(self):

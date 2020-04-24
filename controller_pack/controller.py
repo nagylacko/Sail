@@ -8,13 +8,32 @@ class Controller:
     def __init__(self):
         self.model = Model()
         self.view = View()
+        
+    def run(self):
+        generation_count = 200
+        test_cases = 3
+        self.test_results = [[]] * test_cases
+        for i in range(generation_count):
+            display = False
+            if i > 15:
+                display = True            
+            self.run_generation(i, display, test=False)
+            self.evaluate()
+            self.mutate()
+            if i > 15:
+                for j in range(test_cases):
+                    self.run_generation(i, display=True, test=True, test_id=j)    
+            
+        self.model.save('best_ship.npz')
+        self.view.mainloop()
   
     def run_generation(self, generation_index, display=False, test=False, 
                        test_id=-1):
         print('------------------------------------------')
         if test:
             # testing
-            print('Test of', generation_index, '.generation')
+            print('Test case no.', test_id, 'of', generation_index, 
+                  '.generation')
             self.model.prepare_test(test_id=test_id)
         else:
             # normal generation evolving in random environment
@@ -23,15 +42,18 @@ class Controller:
         self.view.prepare_generation(self.model, display, generation_index, 
                                      test)
         # updating the model for 1000 time unit at most
-        for i in range(1000):
-            self.model.update(i)
-            self.view.update(self.model, i)
+        for t in range(1000):
+            self.model.update(t)
+            self.view.update(self.model, t)
             if self.model.population.finished:
                 # stop simulation if all ships reached all the targets
+                if test:
+                    pass
+                    ##self.test_results[test_id].append(t)
                 break
-            message = (str(i+1) + "/1000 Simulation time |" + 
-                       "|" * int(30 * i / 1000) + 
-                       "." * int(30 * (1 - (i / 1000))) + "|  ")
+            message = (str(t + 1) + "/1000 Simulation time |" + 
+                       "|" * int(30 * t / 1000) + 
+                       "." * int(30 * (1 - (t / 1000))) + "|  ")
             sys.stdout.write('\r' + message)                
         print('')
         self.view.clear()    
@@ -49,21 +71,9 @@ if __name__ == '__main__':
     """
     np.random.seed(0)
     c = Controller()
+    c.run()
     
-    generation_count = 200
-    for i in range(generation_count):
-        display = False
-        if i > 1:
-            display = True            
-        c.run_generation(i, display, test=False)
-        c.evaluate()
-        c.mutate()
-        if i > 1:
-            for j in range(3):
-                c.run_generation(i, display=True, test=True, test_id=j)
 
-        
-    c.model.save('best_ship.npz')
      
 # =============================================================================
 #     c.model.load('best_ship.npz', 1)

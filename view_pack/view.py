@@ -18,27 +18,33 @@ class View:
         # Top Frame with Label
         self.top_frame = tk.Frame(self.root)
         self.top_frame.pack(side=tk.TOP, fill=None, expand=False)
-        self.label = tk.Label(self.top_frame, text='X. Generation', font=("Arial Bold", 20), width=80)
+        self.label = tk.Label(self.top_frame, text='X. Generation', 
+                              font=("Arial Bold", 20), width=80)
         self.label.pack(side='bottom', fill=None, expand=False)
         
         # Left Frame with Controls
         self.left_frame = tk.Frame(self.root)
-        self.left_frame.pack(side='left', fill=None, expand=False, padx=10, pady=5)
+        self.left_frame.pack(side='left', fill=None, expand=False, 
+                             padx=10, pady=5)
         
-        self.next_gen_but = tk.Button(self.left_frame, text="Next Generation", padx=5, pady=5)
+        self.next_gen_but = tk.Button(self.left_frame, text="Next Generation", 
+                                      padx=5, pady=5)
         self.next_gen_but['command'] = lambda: self.stop_update()
         self.next_gen_but.pack(side='top')
         
         
-        self.clear_button = tk.Button(self.left_frame, text="Clear", padx=5, pady=5)
+        self.clear_button = tk.Button(self.left_frame, text="Clear", 
+                                      padx=5, pady=5)
         self.clear_button.pack()
-        self.info_label = tk.Label(self.left_frame, text='info label', bg='yellow', height=42, padx=10, pady=10)
+        self.info_label = tk.Label(self.left_frame, text='info label', 
+                                   bg='yellow', height=42, padx=10, pady=10)
         self.info_label.pack(side='bottom')
         
         # Right Frame with Canvas
         self.right_frame = tk.Frame(self.root)
         self.right_frame.pack(fill=None, expand=False)
-        self.canvas = tk.Canvas(master=self.right_frame, width=1160, height=750, bg='blue')
+        self.canvas = tk.Canvas(master=self.right_frame, 
+                                width=1160, height=750, bg='blue')
         self.canvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1)  
         
         self.root.update()
@@ -81,8 +87,7 @@ class View:
                                              fill='yellow')
         self.root.update()
         time.sleep(0.02)
-        self.canvas.delete(time_label)
-        
+        self.canvas.delete(time_label)        
         
     def clear(self):
         for ship_view in self.ship_views:
